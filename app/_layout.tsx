@@ -1,8 +1,9 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import {StatusBar} from "expo-status-bar";
-import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import {AuthProvider} from "@/store/AuthContext";
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -20,9 +21,9 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <AuthProvider>
       <Stack screenOptions={{ headerShown: false }} />
       <StatusBar hidden={true} />
-    </>
-  )
+    </AuthProvider>
+  );
 }

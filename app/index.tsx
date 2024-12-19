@@ -1,9 +1,21 @@
 import {Image, Text, View, StyleSheet, Dimensions} from "react-native";
 import * as AppleAuthentication from 'expo-apple-authentication';
+import {useAuth} from "@/store/AuthContext";
+import {useEffect} from "react";
+import { useRouter } from "expo-router";
 
 const { width } = Dimensions.get('window');
 
 export default function Index() {
+  const { signInWithApple, user } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    setTimeout(() => {
+      router.replace("/home")
+    }, 500)
+  }, []);
+
   return (
     <View>
       <Image
@@ -18,23 +30,7 @@ export default function Index() {
           buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
           cornerRadius={5}
           style={styles.button}
-          onPress={async () => {
-            try {
-              const credential = await AppleAuthentication.signInAsync({
-                requestedScopes: [
-                  AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                  AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                ],
-              });
-              // signed in
-            } catch (e) {
-              if (e.code === 'ERR_REQUEST_CANCELED') {
-                // handle that the user canceled the sign-in flow
-              } else {
-                // handle other errors
-              }
-            }
-          }}
+          onPress={signInWithApple}
         />
       </View>
     </View>
